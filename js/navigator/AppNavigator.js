@@ -28,7 +28,6 @@ const MainNavigator=createStackNavigator({
         screen:DetailPage,
         navigationOptions:{
             title: "Sign Up",
-            header:null,
         }
     }
 });

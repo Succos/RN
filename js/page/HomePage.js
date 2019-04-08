@@ -11,6 +11,7 @@ import PopularPage from './PopularPage';
 import TrendingPage from './TrendingPage';
 import FavoritePage from './FavoritePage';
 import MyPage from './MyPage';
+import NavigationUtil from "../navigator/NavigationUtil";
 
 export default class HomePage extends Component<Props> {
     _tabnavigator() {
@@ -72,6 +73,7 @@ export default class HomePage extends Component<Props> {
     }
 
     render() {
+        NavigationUtil.navigation=this.props.navigation;
         const Tab = this._tabnavigator();
         return <Tab/>
     }
