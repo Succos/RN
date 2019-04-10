@@ -12,6 +12,7 @@ import TrendingPage from '../page/TrendingPage';
 import FavoritePage from '../page/FavoritePage';
 import MyPage from '../page/MyPage';
 import NavigationUtil from "../navigator/NavigationUtil";
+import {BottomTabBar} from "react-navigation-tabs";
 const TABS={
     PopularPage: {
         screen: PopularPage,
@@ -68,10 +69,17 @@ const TABS={
     },
 }
 export default class DynamicTabNavigator extends Component<Props> {
+    constructor(props){
+        super(props);
+        console.disableYellowBox=true;
+
+    }
     _tabnavigator() {
         const {PopularPage,TrendingPage,FavoritePage,MyPage}=TABS;
-        const tabs={PopularPage,TrendingPage,FavoritePage};
-        return createBottomTabNavigator(tabs);
+        const tabs={PopularPage,TrendingPage,FavoritePage,MyPage};
+        return createBottomTabNavigator(tabs,{
+            tabBarComponent:TabBarComponent
+        });
     }
 
     render() {
@@ -80,7 +88,30 @@ export default class DynamicTabNavigator extends Component<Props> {
         return <Tab/>
     }
 }
+class TabBarComponent extends  React.Component{
+    constructor(props) {
+        super(props);
+        this.theme={
+            tintColor:props.activeTintColor,
+            updateTime:new Date().getTime(),
+        }
 
+    }
+    render(){
+        const {routes,index}=this.props.navigation.state;
+        if (routes[index].params){
+            const {theme}=routes[index].params;
+            if (theme&&theme.updateTime>this.theme.updateTime){
+                this.theme=theme;
+            }
+        }
+        return <BottomTabBar
+            {...this.props}
+            activeTintColor={this.theme.tintColor||this.props.activeTintColor}
+        />
+    }
+
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
